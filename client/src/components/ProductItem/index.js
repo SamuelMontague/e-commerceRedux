@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { pluralize } from "../../utils/helpers"
-import { useStoreContext } from "../../utils/GlobalState";
+import { connect } from "react-redux";
 import { ADD_TO_CART, UPDATE_CART_QUANTITY } from "../../utils/actions";
 import { idbPromise } from "../../utils/helpers";
 
-function ProductItem(item) {
-  const [state, dispatch] = useStoreContext();
+function ProductItem({item, cart, dispatch}) {
 
   const {
     image,
@@ -16,7 +15,6 @@ function ProductItem(item) {
     quantity
   } = item;
 
-  const { cart } = state
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === _id)
@@ -57,4 +55,7 @@ function ProductItem(item) {
   );
 }
 
-export default ProductItem;
+const mapStateToProps =(state) => {
+  return {...state.products};
+}
+export default connect (mapStateToProps)(ProductItem);
